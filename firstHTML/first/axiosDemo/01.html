@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.8/vue.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+
+
+    <div id="app">
+
+        {{userList}}
+
+        <!-- 使用v-for 指令把userList数组中的数据显示 -->
+        <table>
+            <tr v-for="user in userList" style="color: brown;">
+                <th style="color: blue;">{{user.id}}</th>
+                <th>{{user.name}}</th>
+                <th>{{user.career}}</th>
+                <th>{{user.level}}</th>
+            </tr>
+        </table>
+    </div>
+
+
+    <script>
+        new Vue({
+            el: '#app', // 绑定vue作用的范围
+            // 固定结构
+            data: { // 在data中定义变量和初始值
+                // 定义变量，值空数组
+                userList: []
+
+            },
+            created() { // 在页面渲染前 调用定义的方法
+                this.getUserList()
+            },
+            methods: { // 编写具体的方法
+                // 创建方法，查询所有的用户数据
+                getUserList() {
+                    // 使用axios发送ajax请求 axios.提交方式("请求接口的路径")  get/post...
+                    axios.get("data.json")
+                        .then(response => {
+                            // console.log(response)
+                            this.userList = response.data.data.items
+                        })     // 请求成功后执行then方法
+                        .catch(error => {
+                            console.log(error)
+                        })    // 请求失败后执行catch
+
+                }
+            }
+
+        })
+    </script>
+</body>
+
+</html>
